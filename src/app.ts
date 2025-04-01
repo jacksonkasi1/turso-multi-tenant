@@ -1,5 +1,5 @@
-import express from "express";
-import { environment } from "./config/environment";
+import express, { ErrorRequestHandler } from "express";
+import { env } from "./config/environment";
 import { organizationRoutes } from "./api/routes/organization_routes";
 import { errorHandler } from "./api/middleware/error_handler";
 import { rateLimiter } from "./api/middleware/rate_limiter";
@@ -15,9 +15,9 @@ app.use(rateLimiter);
 app.use("/api/organizations", organizationRoutes);
 
 // Error handling
-app.use(errorHandler);
+app.use(errorHandler as ErrorRequestHandler);
 
 // Start server
-app.listen(environment.port, () => {
-  logger.info(`Server is running on port ${environment.port}`);
+app.listen(env.PORT, () => {
+  logger.info(`Server is running on port ${env.PORT}`);
 });

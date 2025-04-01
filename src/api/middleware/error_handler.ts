@@ -1,24 +1,49 @@
 import { Request, Response, NextFunction } from "express";
-import { logger } from "../../utils/logger";
+import { ZodError } from "zod";
 import { AppError } from "../../utils/error";
+import { logger } from "../../utils/logger";
+import { env } from "../../config/environment";
 
+/**
+ * Global error handling middleware for Express
+ */
 export const errorHandler = (
-  error: Error,
-  _req: Request,
+  err: Error,
+  req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction
 ) => {
-  logger.error("Error:", error);
+  // Log the error details
+  logger.error("Error Handler:", {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method,
+  });
 
-  if (error instanceof AppError) {
-    return res.status(error.statusCode).json({
-      message: error.message,
-      code: error.code,
+  // Handle known application errors
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      status: "error",
+      message: err.message,
+      code: err.errorCode,
+      ...(env.NODE_ENV === "development" && { stack: err.stack }),
     });
   }
 
-  return res.status(500).json({
-    message: "Internal server error",
-    code: "INTERNAL_SERVER_ERROR",
+  // Handle Zod validation errors
+  if (err instanceof ZodError) {
+    return res.status(400).json({
+      status: "error",
+      message: "Validation failed",
+      errors: err.errors,
+    });
+  }
+
+  // Fallback for unexpected errors
+  res.status(500).json({
+    status: "error",
+    message: "Internal Server Error",
+    ...(env.NODE_ENV === "development" && { stack: err.stack }),
   });
 };

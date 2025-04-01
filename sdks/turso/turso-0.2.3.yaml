@@ -1,0 +1,7 @@
+packageDeclarationVersion: 1
+name: terraform-provider
+version: 0.10.0
+parameterization:
+    name: turso
+    version: 0.2.3
+    value: eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkub3BlbnRvZnUub3JnL2NlbGVzdC1kZXYvdHVyc28iLCJ2ZXJzaW9uIjoiMC4yLjMifX0=

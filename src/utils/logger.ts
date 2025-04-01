@@ -1,18 +1,32 @@
-import winston from "winston";
-import { env } from "../config/environment";
+import pino from 'pino';
+import { env } from '../config/environment';
 
-export const logger = winston.createLogger({
-  level: env.NODE_ENV === "development" ? "debug" : "info",
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json(),
-  ),
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple(),
-      ),
-    }),
-  ],
-});
+// Configure logger based on environment
+const loggerConfig = {
+  level: env.NODE_ENV === 'production' ? 'info' : 'debug',
+  transport: env.NODE_ENV !== 'production' 
+    ? {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          translateTime: 'SYS:standard',
+          ignore: 'pid,hostname',
+        },
+      }
+    : undefined,
+  redact: {
+    paths: [
+      'databaseToken',
+      'password',
+      'token',
+      'authorization',
+      '*.password',
+      '*.token',
+      '*.authorization',
+    ],
+    censor: '[REDACTED]',
+  },
+};
+
+// Create and export the logger instance
+export const logger = pino(loggerConfig);
