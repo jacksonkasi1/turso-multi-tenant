@@ -1,5 +1,4 @@
 import * as pulumi from "@pulumi/pulumi";
-import { environment } from "../../config/environment";
 
 interface TursoDBArgs {
   name: string;

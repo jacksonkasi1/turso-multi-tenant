@@ -1,7 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 
 import { TursoDB } from "./pulumi/turso_db";
-import { env } from "../config/environment";
 
 export class Provisioner {
   private stack: pulumi.StackReference;
@@ -11,19 +10,14 @@ export class Provisioner {
   }
 
   async provisionDatabase(name: string): Promise<{
-    databaseUrl: string;
-    authToken: string;
+    databaseUrl: pulumi.Output<string>;
+    authToken: pulumi.Output<string>;
   }> {
     const db = new TursoDB(`${name}-db`, { name });
 
-    const outputs = await Promise.all([
-      db.databaseUrl.apply((url) => url),
-      db.authToken.apply((token) => token),
-    ]);
-
     return {
-      databaseUrl: outputs[0],
-      authToken: outputs[1],
+      databaseUrl: db.databaseUrl,
+      authToken: db.authToken,
     };
   }
 }

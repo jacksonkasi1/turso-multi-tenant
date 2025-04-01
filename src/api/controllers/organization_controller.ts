@@ -12,7 +12,14 @@ export class OrganizationController {
     this.service = new OrganizationService();
   }
 
-  async create(req: Request<{}, {}, CreateOrganizationDto>, res: Response) {
+  async create(
+    req: Request<
+      Record<string, never>,
+      Record<string, never>,
+      CreateOrganizationDto
+    >,
+    res: Response,
+  ) {
     const organization = await this.service.createOrganization(req.body.name);
     res.status(201).json(organization);
   }
