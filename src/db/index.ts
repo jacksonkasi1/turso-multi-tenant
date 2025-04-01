@@ -1,2 +1,2 @@
-export * from '../config/database';
-export * from './schema/organizations'; 
+export * from "../config/database";
+export * from "./schema/organizations";

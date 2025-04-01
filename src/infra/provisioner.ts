@@ -15,7 +15,7 @@ export class Provisioner {
     authToken: string;
   }> {
     const db = new TursoDB(`${name}-db`, { name });
-    
+
     const outputs = await Promise.all([
       db.databaseUrl.apply((url) => url),
       db.authToken.apply((token) => token),

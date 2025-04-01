@@ -1,6 +1,9 @@
-import { Request, Response } from 'express';
-import { OrganizationService } from '../../services/organization_service';
-import { CreateOrganizationDto, OrganizationIdDto } from '../validators/organization_validator';
+import { Request, Response } from "express";
+import { OrganizationService } from "../../services/organization_service";
+import {
+  CreateOrganizationDto,
+  OrganizationIdDto,
+} from "../validators/organization_validator";
 
 export class OrganizationController {
   private service: OrganizationService;
@@ -17,7 +20,7 @@ export class OrganizationController {
   async get(req: Request<OrganizationIdDto>, res: Response) {
     const organization = await this.service.getOrganization(req.params.id);
     if (!organization) {
-      res.status(404).json({ message: 'Organization not found' });
+      res.status(404).json({ message: "Organization not found" });
       return;
     }
     res.json(organization);
@@ -27,4 +30,4 @@ export class OrganizationController {
     const organizations = await this.service.listOrganizations();
     res.json(organizations);
   }
-} 
+}

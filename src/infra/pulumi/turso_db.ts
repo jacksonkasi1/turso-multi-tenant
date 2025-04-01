@@ -9,7 +9,11 @@ export class TursoDB extends pulumi.ComponentResource {
   public readonly databaseUrl: pulumi.Output<string>;
   public readonly authToken: pulumi.Output<string>;
 
-  constructor(name: string, args: TursoDBArgs, opts?: pulumi.ComponentResourceOptions) {
+  constructor(
+    name: string,
+    args: TursoDBArgs,
+    opts?: pulumi.ComponentResourceOptions,
+  ) {
     super("custom:resource:TursoDB", name, args, opts);
 
     // Note: This is a mock implementation since Turso doesn't have an official Pulumi provider
@@ -22,4 +26,4 @@ export class TursoDB extends pulumi.ComponentResource {
       authToken: this.authToken,
     });
   }
-} 
+}

@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { AnyZodObject, z } from 'zod';
+import { Request, Response, NextFunction } from "express";
+import { AnyZodObject, z } from "zod";
 
 interface ValidateSchema {
   params?: AnyZodObject;
@@ -23,12 +23,12 @@ export const validateRequest = (schema: ValidateSchema) => {
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({
-          message: 'Validation failed',
-          errors: error.errors
+          message: "Validation failed",
+          errors: error.errors,
         });
         return;
       }
       next(error);
     }
   };
-}; 
+};
